@@ -4,6 +4,10 @@ import os
 import struct
 import yaml # Requires PyYAML
 
+try:
+    from yaml import CLoader as Loader
+except ImportError:
+    from yaml import Loader
 
 MEMMAPFILE = 'Local\\IRSDKMemMapFileName'
 MEMMAPFILESIZE = 798720 # Hopefully this is fairly static...
@@ -166,7 +170,7 @@ class API(object):
         self._mmp.seek(0)
         headers = self._mmp.readline()
         return yaml.load(self._mmp[self._mmp.tell():self._yaml_end],
-                         Loader=yaml.CLoader)
+                         Loader=Loader)
 
     def _get(self, position, type):
         """ Gets a value from the mmp, based on a position and struct var type.
